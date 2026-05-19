@@ -1,4 +1,5 @@
-const server="https://smartorder-ai.onrender.com"// ================= PRODUCTS =================
+const server="https://smartorder-ai.onrender.com"
+  
 export const getProducts = async (color) => {
   const url = color
     ? `${BASE_URL}/products?color=${color}`
