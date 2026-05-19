@@ -28,6 +28,18 @@ app.use("/api/orders", orderRoutes);
 const contactRoutes = require("./routes/contactRoutes");
 app.use("/api/contacts", contactRoutes);
 // MongoDB Connection
+
+
+// yaha add karo
+app.get("/", (req, res) => {
+  res.send("Backend Running");
+});
+
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API Working" });
+});
+
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected"))
 .catch(err => console.log(err));
