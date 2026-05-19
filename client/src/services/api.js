@@ -1,5 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
-
+const BASE_URL = "https://smartorder-ai.onrender.com/api";
 // ================= PRODUCTS =================
 export const getProducts = async (color) => {
   const url = color
