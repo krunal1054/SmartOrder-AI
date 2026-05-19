@@ -1,5 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
-// ================= PRODUCTS =================
+const server="https://smartorder-ai.onrender.com"// ================= PRODUCTS =================
 export const getProducts = async (color) => {
   const url = color
     ? `${BASE_URL}/products?color=${color}`
