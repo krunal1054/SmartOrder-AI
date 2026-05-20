@@ -1,6 +1,7 @@
-const BASE_URL = "http://localhost:5000/api";
 
-// ================= PRODUCTS =================
+const BASE_URL = "https://smartorder-ai.onrender.com/api";
+
+// PRODUCTS
 export const getProducts = async (color) => {
   const url = color
     ? `${BASE_URL}/products?color=${color}`
@@ -13,9 +14,12 @@ export const getProducts = async (color) => {
 export const addProduct = async (data) => {
   const res = await fetch(`${BASE_URL}/products`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
+
   return res.json();
 };
 
@@ -25,12 +29,13 @@ export const deleteProduct = async (id) => {
   });
 };
 
-// ================= AUTH =================
-
+// AUTH
 export const loginAdmin = async (data) => {
   const res = await fetch(`${BASE_URL}/admin/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
 
@@ -40,15 +45,16 @@ export const loginAdmin = async (data) => {
 export const registerAdmin = async (data) => {
   const res = await fetch(`${BASE_URL}/admin/register`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
 
   return res.json();
 };
 
-
-// GET ALL USERS
+// USERS
 export const getUsers = async () => {
   const token = localStorage.getItem("adminToken");
 
@@ -60,14 +66,15 @@ export const getUsers = async () => {
 
   return res.json();
 };
-// ✅ DEFAULT EXPORT
+
 const api = {
   getProducts,
   addProduct,
   deleteProduct,
   loginAdmin,
   registerAdmin,
-  getUsers,   // 🔥 ADD THIS
+  getUsers,
 };
 
 export default api;
+
