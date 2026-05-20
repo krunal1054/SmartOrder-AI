@@ -5,64 +5,66 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware
+// ================= MIDDLEWARE =================
 app.use(cors());
 app.use(express.json());
 
 // ================= ROUTES =================
 
 // Products
-const productRoutes = require("./routes/productRoutes");
-app.use("/api/products", productRoutes);
+app.use("/api/products", require("./routes/productRoutes"));
 
 // Uploads
 app.use("/uploads", express.static("uploads"));
 
-// Existing Routes
-const behaviorRoutes = require("./routes/behaviorRoutes");
-app.use("/api/behavior", behaviorRoutes);
-
-const adminRoutes = require("./routes/adminRoutes");
-app.use("/api/admin", adminRoutes);
-
-const paymentRoutes = require("./routes/paymentRoutes");
-app.use("/api/payments", paymentRoutes);
-
-const orderRoutes = require("./routes/orderRoutes");
-app.use("/api/orders", orderRoutes);
-
-const contactRoutes = require("./routes/contactRoutes");
-app.use("/api/contacts", contactRoutes);
+// Other Routes
+app.use("/api/behavior", require("./routes/behaviorRoutes"));
+app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/payments", require("./routes/paymentRoutes"));
+app.use("/api/orders", require("./routes/orderRoutes"));
+app.use("/api/contacts", require("./routes/contactRoutes"));
 
 // ================= TEST ROUTES =================
 
 app.get("/", (req, res) => {
-  res.send("Backend Running");
+  res.send("✅ Backend Running");
 });
 
 app.get("/api/test", (req, res) => {
-  res.json({ message: "API Working" });
+  res.json({
+    success: true,
+    message: "API Working",
+  });
 });
 
 // ================= MONGODB =================
 
 mongoose.set("strictQuery", false);
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    serverSelectionTimeoutMS: 30000,
-  })
-  .then(() => {
+const connectDB = async () => {
+  try {
+    console.log("⏳ Connecting MongoDB...");
+
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 30000,
+    });
+
     console.log("✅ MongoDB Connected");
-  })
-  .catch((err) => {
-    console.log("❌ Mongo Error:", err.message);
-  });
+
+  } catch (error) {
+    console.log("❌ MongoDB Connection Failed");
+    console.log(error);
+
+    process.exit(1);
+  }
+};
 
 // ================= SERVER =================
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
 });
