@@ -14,22 +14,28 @@ export const addProduct = async (data) => {
   const res = await fetch(`${BASE_URL}/products`, {
     method: "POST",
     headers: {
-      "Content-Type":"application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 
   return res.json();
 };
 
+export const deleteProduct = async (id) => {
+  await fetch(`${BASE_URL}/products/${id}`, {
+    method: "DELETE",
+  });
+};
+
 // AUTH
 export const loginAdmin = async (data) => {
   const res = await fetch(`${BASE_URL}/admin/login`, {
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-    body:JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 
   return res.json();
@@ -37,12 +43,36 @@ export const loginAdmin = async (data) => {
 
 export const registerAdmin = async (data) => {
   const res = await fetch(`${BASE_URL}/admin/register`, {
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-    body:JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 
   return res.json();
 };
+
+// USERS
+export const getUsers = async () => {
+  const token = localStorage.getItem("adminToken");
+
+  const res = await fetch(`${BASE_URL}/admin/users`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+};
+
+const api = {
+  getProducts,
+  addProduct,
+  deleteProduct,
+  loginAdmin,
+  registerAdmin,
+  getUsers,
+};
+
+export default api;
