@@ -5,66 +5,35 @@ require("dotenv").config();
 
 const app = express();
 
-// ================= MIDDLEWARE =================
 app.use(cors());
 app.use(express.json());
 
-// ================= ROUTES =================
-
-// Products
-app.use("/api/products", require("./routes/productRoutes"));
-
-// Uploads
+// ✅ PRODUCT ROUTES ADD KARO
+const productRoutes = require("./routes/productRoutes");
+app.use("/api/products", productRoutes);
 app.use("/uploads", express.static("uploads"));
+// Existing
+const behaviorRoutes = require("./routes/behaviorRoutes");
+app.use("/api/behavior", behaviorRoutes);
 
-// Other Routes
-app.use("/api/behavior", require("./routes/behaviorRoutes"));
-app.use("/api/admin", require("./routes/adminRoutes"));
-app.use("/api/payments", require("./routes/paymentRoutes"));
-app.use("/api/orders", require("./routes/orderRoutes"));
-app.use("/api/contacts", require("./routes/contactRoutes"));
+const adminRoutes = require("./routes/adminRoutes");
+app.use("/api/admin", adminRoutes);
 
-// ================= TEST ROUTES =================
+const paymentRoutes = require("./routes/paymentRoutes");
+app.use("/api/payments", paymentRoutes);
 
-app.get("/", (req, res) => {
-  res.send("✅ Backend Running");
-});
+const orderRoutes = require("./routes/orderRoutes");
+app.use("/api/orders", orderRoutes);
 
-app.get("/api/test", (req, res) => {
-  res.json({
-    success: true,
-    message: "API Working",
-  });
-});
+const contactRoutes = require("./routes/contactRoutes");
+app.use("/api/contacts", contactRoutes);
+// MongoDB Connection
 
-// ================= MONGODB =================
 
-mongoose.set("strictQuery", false);
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.log(err));
 
-const connectDB = async () => {
-  try {
-    console.log("⏳ Connecting MongoDB...");
-
-    await mongoose.connect(process.env.MONGO_URI, {
-      serverSelectionTimeoutMS: 30000,
-    });
-
-    console.log("✅ MongoDB Connected");
-
-  } catch (error) {
-    console.log("❌ MongoDB Connection Failed");
-    console.log(error);
-
-    process.exit(1);
-  }
-};
-
-// ================= SERVER =================
-
-const PORT = process.env.PORT || 5000;
-
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-  });
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
 });
