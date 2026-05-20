@@ -41,8 +41,13 @@ app.get("/api/test", (req, res) => {
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+.then(() => {
+  console.log("✅ MongoDB Connected");
+})
+.catch(err => {
+  console.log("❌ Mongo Error:", err);
+});
+
 
 const PORT = process.env.PORT || 5000;
 
